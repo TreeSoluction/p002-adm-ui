@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { estadosBrasil } from "@/app/const";
 import { apiGet, apiPost, apiPut } from "@/app/utils/api";
@@ -65,7 +65,7 @@ export default function Page({ params }: any) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      if (params.id) {
+      if (hasValidId(params.id)) {
         await apiPut<any>(`/excursoes/${params.id}`, form);
       } else {
         await apiPost<any>("/excursoes", form);
@@ -84,10 +84,18 @@ export default function Page({ params }: any) {
       .slice(0, 15);
   }
 
+  function hasValidId(id: any) {
+    if (isNaN(id)) {
+      return false;
+    }
+
+    return id && id !== "" && id !== "undefined" && id !== "null";
+  }
+
   return (
     <div className="max-w-xl mx-auto bg-white p-8 rounded-lg shadow text-gray-800">
       <h1 className="text-2xl font-bold mb-6">
-        {params.id ? "Editar Excursão" : "Nova Excursão"}
+        {hasValidId(params.id) ? "Editar Excursão" : "Nova Excursão"}
       </h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -215,7 +223,7 @@ export default function Page({ params }: any) {
           type="submit"
           className="w-full bg-blue-700 text-white py-3 rounded font-bold text-lg hover:bg-blue-800 transition"
         >
-          {params.id ? "Salvar alterações" : "Salvar"}
+          {hasValidId(params.id) ? "Salvar alterações" : "Salvar"}
         </button>
       </form>
     </div>
