@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { estadosBrasil } from "@/app/const";
 import { apiGet, apiPost, apiPut } from "@/app/utils/api";
 
-export default function Page({ params }: { params: { id: string } }) {
+export default function Page({ params }: any) {
   const router = useRouter();
   const [form, setForm] = useState({
     nome: "",
