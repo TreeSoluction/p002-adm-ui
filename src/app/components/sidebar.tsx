@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const menu = [
   { label: "Excursões", href: "/dashboard/excursoes" },
-  { label: "Hospedagem", href: "/dashboard/hospedagem" },
+  { label: "Hospedagem", href: "/dashboard/hospedagens" },
 ];
 
 type SidebarProps = {

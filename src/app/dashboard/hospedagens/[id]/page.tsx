@@ -1,38 +1,32 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { estadosBrasil } from "@/app/const";
 import { apiGet, apiPost, apiPut } from "@/app/utils/api";
 
 export default function Page({ params }: any) {
   const router = useRouter();
   const [form, setForm] = useState({
     nome: "",
-    descricao: "",
-    estado: "",
-    origem: "",
-    rota: [""],
+    local: "",
+    imagem: "",
     phone_numbers: [""],
   });
 
   useEffect(() => {
     const loadData = async () => {
-      const result = await apiGet<any>(`/excursoes/${params.id}`);
+      const result = await apiGet<any>(`/hospedagens/${params.id}`);
       setForm({
         nome: result.nome || "",
-        descricao: result.descricao || "",
-        estado: result.estado || "",
-        origem: result.origem || "",
-        rota: result.rota && result.rota.length > 0 ? result.rota : [""],
+        local: result.local || "",
+        imagem: result.imagem || "",
         phone_numbers:
           result.phone_numbers && result.phone_numbers.length > 0
             ? result.phone_numbers
             : [""],
       });
     };
-    if (hasValidId(params.id)) {
-      loadData();
-    }
+
+    loadData();
   }, []);
 
   const handleChange = (
@@ -43,9 +37,20 @@ export default function Page({ params }: any) {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setForm({ ...form, imagem: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleArrayChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    field: "rota" | "phone_numbers",
+    field: "phone_numbers",
     idx: number
   ) => {
     const arr = [...form[field]];
@@ -53,11 +58,11 @@ export default function Page({ params }: any) {
     setForm({ ...form, [field]: arr });
   };
 
-  const addField = (field: "rota" | "phone_numbers") => {
+  const addField = (field: "phone_numbers") => {
     setForm({ ...form, [field]: [...form[field], ""] });
   };
 
-  const removeField = (field: "rota" | "phone_numbers", idx: number) => {
+  const removeField = (field: "phone_numbers", idx: number) => {
     const arr = [...form[field]];
     arr.splice(idx, 1);
     setForm({ ...form, [field]: arr });
@@ -67,11 +72,11 @@ export default function Page({ params }: any) {
     e.preventDefault();
     try {
       if (hasValidId(params.id)) {
-        await apiPut<any>(`/excursoes/${params.id}`, form);
+        await apiPut<any>(`/hospedagens/${params.id}`, form);
       } else {
-        await apiPost<any>("/excursoes", form);
+        await apiPost<any>("/hospedagens", form);
       }
-      router.push("/dashboard/excursoes");
+      router.push("/dashboard/hospedagens");
     } catch (e) {
       console.error(e);
     }
@@ -96,7 +101,7 @@ export default function Page({ params }: any) {
   return (
     <div className="max-w-xl mx-auto bg-white p-8 rounded-lg shadow text-gray-800">
       <h1 className="text-2xl font-bold mb-6">
-        {hasValidId(params.id) ? "Editar Excursão" : "Nova Excursão"}
+        {hasValidId(params.id) ? "Editar Hospedagem" : "Nova Hospedagem"}
       </h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -111,72 +116,33 @@ export default function Page({ params }: any) {
           />
         </div>
         <div>
-          <label className="block font-semibold mb-1">Descrição</label>
-          <textarea
-            name="descricao"
-            value={form.descricao}
-            onChange={handleChange}
-            className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            required
-          />
-        </div>
-        <div>
-          <label className="block font-semibold mb-1">Estado</label>
-          <select
-            name="estado"
-            value={form.estado}
-            onChange={handleChange}
-            className="w-full border border-blue-200 rounded px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400"
-            required
-          >
-            <option value="">Selecione o estado</option>
-            {estadosBrasil.map((uf) => (
-              <option key={uf} value={uf}>
-                {uf}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label className="block font-semibold mb-1">Origem</label>
+          <label className="block font-semibold mb-1">Local</label>
           <input
             type="text"
-            name="origem"
-            value={form.origem}
+            name="local"
+            value={form.local}
             onChange={handleChange}
             className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
           />
         </div>
         <div>
-          <label className="block font-semibold mb-1">Rota</label>
-          {form.rota.map((rota, idx) => (
-            <div key={idx} className="flex items-center mb-2">
-              <input
-                type="text"
-                value={rota}
-                onChange={(e) => handleArrayChange(e, "rota", idx)}
-                className="flex-1 border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                required
+          <label className="block font-semibold mb-1">Imagem</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          {form.imagem && (
+            <div className="mt-2">
+              <img
+                src={form.imagem}
+                alt="Preview"
+                className="max-w-full h-32 object-cover rounded border"
               />
-              {form.rota.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => removeField("rota", idx)}
-                  className="ml-2 text-blue-600 hover: font-bold"
-                >
-                  Remover
-                </button>
-              )}
             </div>
-          ))}
-          <button
-            type="button"
-            onClick={() => addField("rota")}
-            className="hover:text-blue-900 mt-1 font-semibold"
-          >
-            + Adicionar rota
-          </button>
+          )}
         </div>
         <div>
           <label className="block font-semibold mb-1">Telefones</label>
