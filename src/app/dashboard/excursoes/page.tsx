@@ -14,7 +14,7 @@ const columns = [
   { key: "phone_numbers", label: "Telefones" },
 ];
 
-function sortData(data, sortBy, sortOrder) {
+function sortData(data: any, sortBy: any, sortOrder: any) {
   return [...data].sort((a, b) => {
     let aValue = a[sortBy];
     let bValue = b[sortBy];
@@ -43,7 +43,7 @@ export default function ExcursoesPage() {
     loadData();
   }, []);
 
-  const handleSort = (key) => {
+  const handleSort = (key: any) => {
     if (sortBy === key) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
@@ -52,14 +52,13 @@ export default function ExcursoesPage() {
     }
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (id: any) => {
     // Aqui você pode chamar sua API de deleção
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 
-  const handleEdit = (id) => {
-    // Aqui você pode navegar para a tela de edição ou abrir um modal
-    alert(`Editar excursão com id ${id}`);
+  const handleEdit = (id: any) => {
+    router.push(`/dashboard/excursoes/${id}`);
   };
 
   const filteredData = data.filter((excursao) => {
@@ -87,11 +86,12 @@ export default function ExcursoesPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <div className="flex bg-blue-800 p-1 px-10 rounded-sm justify-center">
-          <button onClick={() => router.push("/dashboard/excursoes/novo")}>
-            Criar
-          </button>
-        </div>
+        <button
+          className="flex bg-blue-800 p-1 px-10 rounded-sm justify-center items-center"
+          onClick={() => router.push("/dashboard/excursoes/gerenciar")}
+        >
+          Criar
+        </button>
       </div>
 
       <div className="overflow-x-auto bg-white rounded-lg shadow">
