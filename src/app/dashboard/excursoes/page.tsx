@@ -29,7 +29,7 @@ function sortData(data: any, sortBy: any, sortOrder: any) {
 }
 
 export default function ExcursoesPage() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any[]>([]);
   const [sortBy, setSortBy] = useState("id");
   const [sortOrder, setSortOrder] = useState("asc");
   const [search, setSearch] = useState("");
