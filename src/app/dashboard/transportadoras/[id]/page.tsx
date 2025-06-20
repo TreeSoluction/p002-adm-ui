@@ -15,7 +15,7 @@ export default function Page({ params }: any) {
 
   useEffect(() => {
     const loadData = async () => {
-      const result = await apiGet<any>(`/estacionamentos/${params.id}`);
+      const result = await apiGet<any>(`/transportadoras/${params.id}`);
       setForm({
         nome: result.nome || "",
         local: result.local || "",
@@ -74,11 +74,11 @@ export default function Page({ params }: any) {
     e.preventDefault();
     try {
       if (hasValidId(params.id)) {
-        await apiPut<any>(`/estacionamentos/${params.id}`, form);
+        await apiPut<any>(`/transportadoras/${params.id}`, form);
       } else {
-        await apiPost<any>("/estacionamentos", form);
+        await apiPost<any>("/transportadoras", form);
       }
-      router.push("/dashboard/estacionamentos");
+      router.push("/dashboard/transportadoras");
     } catch (e) {
       console.error(e);
     }
@@ -104,8 +104,8 @@ export default function Page({ params }: any) {
     <div className="max-w-xl mx-auto bg-white p-8 rounded-lg shadow text-gray-800">
       <h1 className="text-2xl font-bold mb-6">
         {hasValidId(params.id)
-          ? "Editar Estacionamento"
-          : "Nova Estacionamento"}
+          ? "Editar Transportadora"
+          : "Nova Transportadora"}
       </h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>

@@ -10,6 +10,7 @@ const menu = [
   { label: "Quiosques", href: "/dashboard/quiosques" },
   { label: "Estacionamentos", href: "/dashboard/estacionamentos" },
   { label: "Malharias", href: "/dashboard/malharias" },
+  { label: "Transportadoras", href: "/dashboard/transportadoras" },
 ];
 
 type SidebarProps = {

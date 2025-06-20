@@ -5,4 +5,5 @@ export const API_ROUTES = {
   QUIOSQUES: "/quiosques",
   MALHARIAS: "/malharias",
   ESTACIONAMENTOS: "/estacionamentos",
+  TRANSPORTADORAS: "/transportadoras",
 };

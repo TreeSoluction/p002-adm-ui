@@ -1,15 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { estadosBrasil } from "@/app/const";
 import { apiGet, apiPost, apiPut } from "@/app/utils/api";
 
 export default function Page({ params }: any) {
   const router = useRouter();
   const [form, setForm] = useState({
     nome: "",
-    cidade: "",
     local: "",
+    cidade: "",
+    imagem: "",
     phone_numbers: [""],
   });
 
@@ -20,15 +20,15 @@ export default function Page({ params }: any) {
         nome: result.nome || "",
         local: result.local || "",
         cidade: result.cidade || "",
+        imagem: result.imagem || "",
         phone_numbers:
           result.phone_numbers && result.phone_numbers.length > 0
             ? result.phone_numbers
             : [""],
       });
     };
-    if (hasValidId(params.id)) {
-      loadData();
-    }
+
+    loadData();
   }, []);
 
   const handleChange = (
@@ -37,6 +37,17 @@ export default function Page({ params }: any) {
     >
   ) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setForm({ ...form, imagem: reader.result as string });
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleArrayChange = (
@@ -107,6 +118,17 @@ export default function Page({ params }: any) {
           />
         </div>
         <div>
+          <label className="block font-semibold mb-1">Cidade</label>
+          <input
+            type="text"
+            name="cidade"
+            value={form.cidade}
+            onChange={handleChange}
+            className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            required
+          />
+        </div>
+        <div>
           <label className="block font-semibold mb-1">Local</label>
           <input
             type="text"
@@ -118,15 +140,22 @@ export default function Page({ params }: any) {
           />
         </div>
         <div>
-          <label className="block font-semibold mb-1">Cidade</label>
+          <label className="block font-semibold mb-1">Imagem</label>
           <input
-            type="text"
-            name="cidade"
-            value={form.cidade}
-            onChange={handleChange}
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
             className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-            required
           />
+          {form.imagem && (
+            <div className="mt-2">
+              <img
+                src={form.imagem}
+                alt="Preview"
+                className="max-w-full h-32 object-cover rounded border"
+              />
+            </div>
+          )}
         </div>
         <div>
           <label className="block font-semibold mb-1">Telefones</label>
