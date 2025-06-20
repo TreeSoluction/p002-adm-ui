@@ -12,6 +12,7 @@ export default function Page({ params }: any) {
     imagem: "",
     phone_numbers: [""],
   });
+  const [cidades, setCidades] = useState<any[]>([]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -29,7 +30,17 @@ export default function Page({ params }: any) {
     };
 
     loadData();
+    loadCidades();
   }, []);
+
+  const loadCidades = async () => {
+    try {
+      const result = await apiGet<any>("/cidades?size=1000&page=0");
+      setCidades(result.data);
+    } catch (error) {
+      console.error("Erro ao carregar cidades:", error);
+    }
+  };
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -119,14 +130,20 @@ export default function Page({ params }: any) {
         </div>
         <div>
           <label className="block font-semibold mb-1">Cidade</label>
-          <input
-            type="text"
+          <select
             name="cidade"
             value={form.cidade}
             onChange={handleChange}
             className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
-          />
+          >
+            <option value="">Selecione uma cidade</option>
+            {cidades.map((cidade) => (
+              <option key={cidade.id} value={cidade.nome}>
+                {cidade.nome}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           <label className="block font-semibold mb-1">Local</label>
