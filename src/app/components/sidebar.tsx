@@ -11,6 +11,7 @@ const menu = [
   { label: "Estacionamentos", href: "/dashboard/estacionamentos" },
   { label: "Malharias", href: "/dashboard/malharias" },
   { label: "Transportadoras", href: "/dashboard/transportadoras" },
+  { label: "Cidade", href: "/dashboard/cidades" },
 ];
 
 type SidebarProps = {
