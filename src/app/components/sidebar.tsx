@@ -12,6 +12,7 @@ const menu = [
   { label: "Malharias", href: "/dashboard/malharias" },
   { label: "Transportadoras", href: "/dashboard/transportadoras" },
   { label: "Cidade", href: "/dashboard/cidades" },
+  { label: "Calendario", href: "/dashboard/calendario" },
 ];
 
 type SidebarProps = {

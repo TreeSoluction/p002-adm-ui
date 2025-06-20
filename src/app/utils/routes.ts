@@ -7,4 +7,5 @@ export const API_ROUTES = {
   ESTACIONAMENTOS: "/estacionamentos",
   TRANSPORTADORAS: "/transportadoras",
   CIDADES: "/cidades",
+  CALENDARIO: "/calendario",
 };
