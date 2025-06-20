@@ -8,6 +8,7 @@ export default function Page({ params }: any) {
   const [form, setForm] = useState({
     nome: "",
     local: "",
+    cidade: "",
     imagem: "",
     phone_numbers: [""],
   });
@@ -18,6 +19,7 @@ export default function Page({ params }: any) {
       setForm({
         nome: result.nome || "",
         local: result.local || "",
+        cidade: "",
         imagem: result.imagem || "",
         phone_numbers:
           result.phone_numbers && result.phone_numbers.length > 0
@@ -110,6 +112,17 @@ export default function Page({ params }: any) {
             type="text"
             name="nome"
             value={form.nome}
+            onChange={handleChange}
+            className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            required
+          />
+        </div>
+        <div>
+          <label className="block font-semibold mb-1">Cidade</label>
+          <input
+            type="text"
+            name="cidade"
+            value={form.cidade}
             onChange={handleChange}
             className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
             required
