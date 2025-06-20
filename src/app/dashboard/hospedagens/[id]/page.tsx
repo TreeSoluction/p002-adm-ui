@@ -19,7 +19,7 @@ export default function Page({ params }: any) {
       setForm({
         nome: result.nome || "",
         local: result.local || "",
-        cidade: "",
+        cidade:  result.cidade ||"",
         imagem: result.imagem || "",
         phone_numbers:
           result.phone_numbers && result.phone_numbers.length > 0

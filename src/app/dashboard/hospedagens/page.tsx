@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 const columns = [
   { key: "id", label: "ID" },
   { key: "nome", label: "Nome" },
+  { key: "cidade", label: "Cidade" },
   { key: "local", label: "Local" },
   { key: "phone_numbers", label: "Telefones" },
 ];
@@ -153,6 +154,7 @@ export default function hospedagensPage() {
             {sortedData.map((excursao) => (
               <tr key={excursao.id} className="hover:bg-blue-50 transition">
                 <td className="px-4 py-2">{excursao.id}</td>
+                <td className="px-4 py-2">{excursao.cidade}</td>
                 <td className="px-4 py-2">{excursao.nome}</td>
                 <td className="px-4 py-2">{excursao.local}</td>
                 <td className="px-4 py-2">
