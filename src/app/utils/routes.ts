@@ -8,4 +8,5 @@ export const API_ROUTES = {
   TRANSPORTADORAS: "/transportadoras",
   CIDADES: "/cidades",
   CALENDARIO: "/calendario",
+  LOJAS: "/lojas",
 };
