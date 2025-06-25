@@ -11,7 +11,7 @@ const RegisterPage = () => {
   const [confirma, setConfirma] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     setError(null);
 
