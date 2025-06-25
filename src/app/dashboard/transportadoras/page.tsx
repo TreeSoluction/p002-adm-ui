@@ -9,6 +9,7 @@ const columns = [
   { key: "nome", label: "Nome" },
   { key: "cidade", label: "Cidade" },
   { key: "local", label: "Local" },
+  { key: "email", label: "Email" }, // Novo campo email
   { key: "phone_numbers", label: "Telefones" },
 ];
 
@@ -157,6 +158,8 @@ export default function transportadorasPage() {
                 <td className="px-4 py-2">{excursao.cidade}</td>
                 <td className="px-4 py-2">{excursao.nome}</td>
                 <td className="px-4 py-2">{excursao.local}</td>
+                <td className="px-4 py-2">{excursao.email}</td>{" "}
+                {/* Exibe email */}
                 <td className="px-4 py-2">
                   {excursao.phone_numbers.join(", ")}
                 </td>

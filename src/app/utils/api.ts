@@ -1,12 +1,32 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
-
-
+import { useRouter } from "next/navigation";
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
 });
+
+api.interceptors.request.use((config) => {
+  let token = localStorage.getItem("authToken");
+  if (token) {
+    token = token.replace(/^"(.*)"$/, "$1");
+    config.headers = config.headers || {};
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem("authToken");
+      window.location.href = "/login";
+    }
+    return Promise.reject(error);
+  }
+);
 
 // Função para tratar erros
 function handleError(error: any): string {

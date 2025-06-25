@@ -19,43 +19,24 @@ export function AuthContextProvider({ children }: { children: ReactNode }) {
 
   const isAuthenticated = !!token;
 
-  // Login: salva token (pode ser localStorage ou só estado)
   function login(newToken: string) {
     setToken(newToken);
-    // opcional: salvar no localStorage para persistência
+    console.log("Token set:", newToken);
     localStorage.setItem("authToken", newToken);
   }
 
-  // Logout: limpa token e redireciona para login
   function logout() {
     setToken(null);
     localStorage.removeItem("authToken");
     router.push("/login");
   }
 
-  // Ao montar, tenta recuperar token do localStorage
   useEffect(() => {
     const savedToken = localStorage.getItem("authToken");
     if (savedToken) {
       setToken(savedToken);
     }
   }, []);
-
-  // Configura interceptor axios para logout automático em 401
-  useEffect(() => {
-    const interceptor = axios.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        if (error.response?.status === 401) {
-          logout();
-        }
-        return Promise.reject(error);
-      }
-    );
-    return () => {
-      axios.interceptors.response.eject(interceptor);
-    };
-  }, [token]);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout, token }}>
