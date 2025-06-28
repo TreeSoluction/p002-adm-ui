@@ -14,6 +14,7 @@ const menu = [
   { label: "Cidade", href: "/dashboard/cidades" },
   { label: "Calendario", href: "/dashboard/calendario" },
   { label: "Lojas", href: "/dashboard/lojas" },
+  { label: "Freteiros", href: "/dashboard/freteiros" },
 ];
 
 type SidebarProps = {
