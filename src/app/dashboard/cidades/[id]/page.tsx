@@ -3,24 +3,58 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { apiGet, apiPost, apiPut } from "@/app/utils/api";
 
+const estados = [
+  { sigla: "AC", nome: "Acre" },
+  { sigla: "AL", nome: "Alagoas" },
+  { sigla: "AP", nome: "Amapá" },
+  { sigla: "AM", nome: "Amazonas" },
+  { sigla: "BA", nome: "Bahia" },
+  { sigla: "CE", nome: "Ceará" },
+  { sigla: "DF", nome: "Distrito Federal" },
+  { sigla: "ES", nome: "Espírito Santo" },
+  { sigla: "GO", nome: "Goiás" },
+  { sigla: "MA", nome: "Maranhão" },
+  { sigla: "MT", nome: "Mato Grosso" },
+  { sigla: "MS", nome: "Mato Grosso do Sul" },
+  { sigla: "MG", nome: "Minas Gerais" },
+  { sigla: "PA", nome: "Pará" },
+  { sigla: "PB", nome: "Paraíba" },
+  { sigla: "PR", nome: "Paraná" },
+  { sigla: "PE", nome: "Pernambuco" },
+  { sigla: "PI", nome: "Piauí" },
+  { sigla: "RJ", nome: "Rio de Janeiro" },
+  { sigla: "RN", nome: "Rio Grande do Norte" },
+  { sigla: "RS", nome: "Rio Grande do Sul" },
+  { sigla: "RO", nome: "Rondônia" },
+  { sigla: "RR", nome: "Roraima" },
+  { sigla: "SC", nome: "Santa Catarina" },
+  { sigla: "SP", nome: "São Paulo" },
+  { sigla: "SE", nome: "Sergipe" },
+  { sigla: "TO", nome: "Tocantins" },
+];
+
 export default function Page({ params }: any) {
   const router = useRouter();
   const [form, setForm] = useState({
     nome: "",
     imagem: "",
+    estado: "", // Adicionado estado ao form
   });
 
   useEffect(() => {
     const loadData = async () => {
-      const result = await apiGet<any>(`/cidades/${params.id}`);
-      setForm({
-        nome: result.nome || "",
-        imagem: result.imagem || "",
-      });
+      if (hasValidId(params.id)) {
+        const result = await apiGet<any>(`/cidades/${params.id}`);
+        setForm({
+          nome: result.nome || "",
+          imagem: result.imagem || "",
+          estado: result.estado || "", // Carrega o estado
+        });
+      }
     };
 
     loadData();
-  }, []);
+  }, [params.id]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -67,7 +101,6 @@ export default function Page({ params }: any) {
     if (isNaN(id)) {
       return false;
     }
-
     return id && id !== "" && id !== "undefined" && id !== "null";
   }
 
@@ -88,6 +121,28 @@ export default function Page({ params }: any) {
             required
           />
         </div>
+
+        {/* Dropdown de Estados Adicionado Aqui */}
+        <div>
+          <label className="block font-semibold mb-1">Estado</label>
+          <select
+            name="estado"
+            value={form.estado}
+            onChange={handleChange}
+            className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            required
+          >
+            <option value="" disabled>
+              Selecione um estado
+            </option>
+            {estados.map((estado) => (
+              <option key={estado.sigla} value={estado.sigla}>
+                {estado.nome}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <div>
           <label className="block font-semibold mb-1">Imagem</label>
           <input
