@@ -1,5 +1,5 @@
 "use client";
-import { apiGet } from "@/app/utils/api";
+import { apiDelete, apiGet } from "@/app/utils/api";
 import { API_ROUTES } from "@/app/utils/routes";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -64,7 +64,8 @@ export default function transportadorasPage() {
     }
   };
 
-  const handleDelete = (id: any) => {
+  const handleDelete = async (id: any) => {
+    await apiDelete<any>(`${API_ROUTES.TRANSPORTADORAS}?${id.toString()}`);
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 
