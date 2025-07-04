@@ -4,26 +4,26 @@ import { useRouter } from "next/navigation";
 import { apiGet, apiPost, apiPut } from "@/app/utils/api";
 
 const categoriaOptions = [
-  "Casa",
-  "Bebês",
+  "Acessórios",
+  "Aço",
+  "Artesanato",
+  "Bebê",
   "Beleza",
   "Calçados",
+  "Casa",
   "Casual",
+  "Couro",
+  "Eletrônico",
+  "Evangélica",
   "Fitness",
-  "Acessórios",
   "Infantil",
-  "Sensual",
-  "Jeans",
-  "Outros",
-  "Moda Praia",
-  "Sleepwear",
+  "Selarias",
 ];
 
 export default function Page({ params }: any) {
   const router = useRouter();
   const [cidades, setCidades] = useState<any[]>([]);
 
-  // Adicionado campo 'produtos' como array de Data URLs
   const [form, setForm] = useState<{
     nome: string;
     imagem: string;
