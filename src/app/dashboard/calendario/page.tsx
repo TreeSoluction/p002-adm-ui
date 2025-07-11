@@ -61,7 +61,7 @@ export default function calendarioPage() {
   };
 
   const handleDelete = async (id: any) => {
-    await apiDelete<any>(`${API_ROUTES.CALENDARIO}?${id.toString()}`);
+    await apiDelete<any>(`${API_ROUTES.CALENDARIO}/${id.toString()}`);
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 

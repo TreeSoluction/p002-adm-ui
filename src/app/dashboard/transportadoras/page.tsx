@@ -65,7 +65,7 @@ export default function transportadorasPage() {
   };
 
   const handleDelete = async (id: any) => {
-    await apiDelete<any>(`${API_ROUTES.TRANSPORTADORAS}?${id.toString()}`);
+    await apiDelete<any>(`${API_ROUTES.TRANSPORTADORAS}/${id.toString()}`);
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 

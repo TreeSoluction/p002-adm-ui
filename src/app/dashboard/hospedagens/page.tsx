@@ -64,7 +64,7 @@ export default function hospedagensPage() {
   };
 
   const handleDelete = async (id: any) => {
-    await apiDelete<any>(`${API_ROUTES.HOSPEDAGENS}?${id.toString()}`);
+    await apiDelete<any>(`${API_ROUTES.HOSPEDAGENS}/${id.toString()}`);
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 

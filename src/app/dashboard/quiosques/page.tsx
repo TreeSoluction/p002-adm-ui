@@ -64,7 +64,7 @@ export default function quiosquesPage() {
   };
 
   const handleDelete = async (id: any) => {
-    await apiDelete<any>(`${API_ROUTES.QUIOSQUES}?${id.toString()}`);
+    await apiDelete<any>(`${API_ROUTES.QUIOSQUES}/${id.toString()}`);
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 

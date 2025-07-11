@@ -66,7 +66,7 @@ export default function ExcursoesPage() {
   };
 
   const handleDelete = async (id: any) => {
-    await apiDelete<any>(`${API_ROUTES.EXCURSOES}?${id.toString()}`);
+    await apiDelete<any>(`${API_ROUTES.EXCURSOES}/${id.toString()}`);
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 

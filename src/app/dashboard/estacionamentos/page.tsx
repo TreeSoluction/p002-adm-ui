@@ -64,7 +64,7 @@ export default function estacionamentosPage() {
   };
 
   const handleDelete = async (id: any) => {
-    await apiDelete<any>(`${API_ROUTES.ESTACIONAMENTOS}?${id.toString()}`);
+    await apiDelete<any>(`${API_ROUTES.ESTACIONAMENTOS}/${id.toString()}`);
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 

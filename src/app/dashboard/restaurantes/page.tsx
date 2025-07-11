@@ -64,7 +64,7 @@ export default function restaurantesPage() {
   };
 
   const handleDelete = async (id: any) => {
-    await apiDelete<any>(`${API_ROUTES.RESTAURANTES}?${id.toString()}`);
+    await apiDelete<any>(`${API_ROUTES.RESTAURANTES}/${id.toString()}`);
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 

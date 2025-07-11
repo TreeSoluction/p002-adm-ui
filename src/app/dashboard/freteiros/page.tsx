@@ -66,7 +66,7 @@ export default function freteirosPage() {
   };
 
   const handleDelete = async (id: any) => {
-    await apiDelete<any>(`${API_ROUTES.FRETEIROS}?${id.toString()}`);
+    await apiDelete<any>(`${API_ROUTES.FRETEIROS}/${id.toString()}`);
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 

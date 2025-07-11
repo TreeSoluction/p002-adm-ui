@@ -62,7 +62,7 @@ export default function cidadesPage() {
   };
 
   const handleDelete = async (id: any) => {
-    await apiDelete<any>(`${API_ROUTES.CIDADES}?${id.toString()}`);
+    await apiDelete<any>(`${API_ROUTES.CIDADES}/${id.toString()}`);
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 

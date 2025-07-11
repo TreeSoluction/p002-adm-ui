@@ -64,7 +64,7 @@ export default function lojasPage() {
   };
 
   const handleDelete = async (id: any) => {
-    await apiDelete<any>(`${API_ROUTES.LOJAS}?${id.toString()}`);
+    await apiDelete<any>(`${API_ROUTES.LOJAS}/${id.toString()}`);
     setData((prev) => prev.filter((item) => item.id !== id));
   };
 

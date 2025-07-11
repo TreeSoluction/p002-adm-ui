@@ -64,10 +64,10 @@ export default function malhariasPage() {
   };
 
   const handleDelete = async (id: any) => {
-    await apiDelete<any>(`${API_ROUTES.MALHARIAS}?${id.toString()}`);
+    await apiDelete<any>(`${API_ROUTES.MALHARIAS}/${id.toString()}`);
     setData((prev) => prev.filter((item) => item.id !== id));
   };
-  
+
   const handleEdit = (id: any) => {
     router.push(`/dashboard/malharias/${id}`);
   };
