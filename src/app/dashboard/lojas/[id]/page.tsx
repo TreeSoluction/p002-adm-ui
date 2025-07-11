@@ -30,16 +30,18 @@ export default function Page({ params }: any) {
     categoria: string;
     cidade: string;
     produtos: string[];
-    whatsapp: string; // Added WhatsApp field
-    instagram: string; // Added Instagram field
+    whatsapp: string;
+    instagram: string;
+    local: string; // Added Local field
   }>({
     nome: "",
     categoria: "",
     imagem: "",
     cidade: "",
     produtos: [],
-    whatsapp: "", // Initialize WhatsApp
-    instagram: "", // Initialize Instagram
+    whatsapp: "",
+    instagram: "",
+    local: "", // Initialize Local
   });
 
   useEffect(() => {
@@ -51,8 +53,9 @@ export default function Page({ params }: any) {
         cidade: result.cidade || "",
         imagem: result.imagem || "",
         produtos: result.produtos || [],
-        whatsapp: result.whatsapp || "", // Load WhatsApp data
-        instagram: result.instagram || "", // Load Instagram data
+        whatsapp: result.whatsapp || "",
+        instagram: result.instagram || "",
+        local: result.local || "", // Load Local data
       });
     };
     loadCidades();
@@ -202,6 +205,18 @@ export default function Page({ params }: any) {
             type="text"
             name="instagram"
             value={form.instagram}
+            onChange={handleChange}
+            className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+
+        {/* Campo Local */}
+        <div>
+          <label className="block font-semibold mb-1">Local</label>
+          <input
+            type="text"
+            name="local"
+            value={form.local}
             onChange={handleChange}
             className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />

@@ -7,8 +7,9 @@ import { useEffect, useState } from "react";
 const columns = [
   { key: "id", label: "ID" },
   { key: "nome", label: "Nome" },
-  { key: "whatsapp", label: "WhatsApp" }, // Added WhatsApp column
-  { key: "instagram", label: "Instagram" }, // Added Instagram column
+  { key: "whatsapp", label: "WhatsApp" },
+  { key: "instagram", label: "Instagram" },
+  { key: "local", label: "Local" }, // Added Local column
 ];
 
 function sortData(data: any, sortBy: any, sortOrder: any) {
@@ -153,10 +154,10 @@ export default function lojasPage() {
               <tr key={loja.id} className="hover:bg-blue-50 transition">
                 <td className="px-4 py-2">{loja.id}</td>
                 <td className="px-4 py-2">{loja.nome}</td>
-                <td className="px-4 py-2">{loja.whatsapp}</td>{" "}
-                {/* Display WhatsApp data */}
-                <td className="px-4 py-2">{loja.instagram}</td>{" "}
-                {/* Display Instagram data */}
+                <td className="px-4 py-2">{loja.whatsapp}</td>
+                <td className="px-4 py-2">{loja.instagram}</td>
+                <td className="px-4 py-2">{loja.local}</td>{" "}
+                {/* Display Local data */}
                 <td className="px-4 py-2 flex gap-2">
                   <button
                     onClick={() => handleEdit(loja.id)}
