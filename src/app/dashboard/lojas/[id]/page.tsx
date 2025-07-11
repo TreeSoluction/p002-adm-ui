@@ -30,12 +30,16 @@ export default function Page({ params }: any) {
     categoria: string;
     cidade: string;
     produtos: string[];
+    whatsapp: string; // Added WhatsApp field
+    instagram: string; // Added Instagram field
   }>({
     nome: "",
     categoria: "",
     imagem: "",
     cidade: "",
     produtos: [],
+    whatsapp: "", // Initialize WhatsApp
+    instagram: "", // Initialize Instagram
   });
 
   useEffect(() => {
@@ -47,11 +51,14 @@ export default function Page({ params }: any) {
         cidade: result.cidade || "",
         imagem: result.imagem || "",
         produtos: result.produtos || [],
+        whatsapp: result.whatsapp || "", // Load WhatsApp data
+        instagram: result.instagram || "", // Load Instagram data
       });
     };
     loadCidades();
     loadData();
   }, [params.id]);
+
   const loadCidades = async () => {
     try {
       const result = await apiGet<any>("/cidades?size=1000&page=0");
@@ -60,6 +67,7 @@ export default function Page({ params }: any) {
       console.error("Erro ao carregar cidades:", error);
     }
   };
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
@@ -79,7 +87,6 @@ export default function Page({ params }: any) {
     reader.readAsDataURL(file);
   };
 
-  // Novo handler para múltiplas imagens de 'produtos'
   const handleProdutosChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     const readers = files.map(
@@ -151,7 +158,9 @@ export default function Page({ params }: any) {
           >
             <option value="">Selecione uma categoria</option>
             {categoriaOptions.map((categoria) => (
-              <option value={categoria}>{categoria}</option>
+              <option key={categoria} value={categoria}>
+                {categoria}
+              </option>
             ))}
           </select>
         </div>
@@ -173,6 +182,31 @@ export default function Page({ params }: any) {
             ))}
           </select>
         </div>
+
+        {/* Campo WhatsApp */}
+        <div>
+          <label className="block font-semibold mb-1">WhatsApp</label>
+          <input
+            type="text"
+            name="whatsapp"
+            value={form.whatsapp}
+            onChange={handleChange}
+            className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+
+        {/* Campo Instagram */}
+        <div>
+          <label className="block font-semibold mb-1">Instagram</label>
+          <input
+            type="text"
+            name="instagram"
+            value={form.instagram}
+            onChange={handleChange}
+            className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+
         {/* Campo Imagem Única */}
         <div>
           <label className="block font-semibold mb-1">Imagem</label>

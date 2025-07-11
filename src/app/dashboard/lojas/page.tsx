@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 const columns = [
   { key: "id", label: "ID" },
   { key: "nome", label: "Nome" },
+  { key: "whatsapp", label: "WhatsApp" }, // Added WhatsApp column
+  { key: "instagram", label: "Instagram" }, // Added Instagram column
 ];
 
 function sortData(data: any, sortBy: any, sortOrder: any) {
@@ -147,13 +149,17 @@ export default function lojasPage() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-blue-100 text-black">
-            {sortedData.map((excursao) => (
-              <tr key={excursao.id} className="hover:bg-blue-50 transition">
-                <td className="px-4 py-2">{excursao.id}</td>
-                <td className="px-4 py-2">{excursao.nome}</td>
+            {sortedData.map((loja) => (
+              <tr key={loja.id} className="hover:bg-blue-50 transition">
+                <td className="px-4 py-2">{loja.id}</td>
+                <td className="px-4 py-2">{loja.nome}</td>
+                <td className="px-4 py-2">{loja.whatsapp}</td>{" "}
+                {/* Display WhatsApp data */}
+                <td className="px-4 py-2">{loja.instagram}</td>{" "}
+                {/* Display Instagram data */}
                 <td className="px-4 py-2 flex gap-2">
                   <button
-                    onClick={() => handleEdit(excursao.id)}
+                    onClick={() => handleEdit(loja.id)}
                     className="p-2 rounded hover:bg-blue-100 text-blue-700"
                     title="Editar"
                   >
@@ -172,7 +178,7 @@ export default function lojasPage() {
                     </svg>
                   </button>
                   <button
-                    onClick={() => handleDelete(excursao.id)}
+                    onClick={() => handleDelete(loja.id)}
                     className="p-2 rounded hover:bg-red-100 text-red-600"
                     title="Deletar"
                   >
