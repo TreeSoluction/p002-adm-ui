@@ -1,4 +1,5 @@
 export const API_ROUTES = {
+  CARROSEL: "/carrosel",
   EXCURSOES: "/excursoes",
   HOSPEDAGENS: "/hospedagens",
   RESTAURANTES: "/restaurantes",

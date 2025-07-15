@@ -13,6 +13,7 @@ const menu = [
   { label: "Transportadoras", href: "/dashboard/transportadoras" },
   { label: "Cidade", href: "/dashboard/cidades" },
   { label: "Calendario", href: "/dashboard/calendario" },
+  { label: "Carrosel", href: "/dashboard/carrosel" },
   { label: "Lojas", href: "/dashboard/lojas" },
   { label: "Freteiros", href: "/dashboard/freteiros" },
 ];
