@@ -5,33 +5,50 @@ import { apiGet, apiPost, apiPut } from "@/app/utils/api";
 
 export default function Page({ params }: any) {
   const router = useRouter();
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    nome: string;
+    local: string;
+    cidade: string;
+    imagem: string;
+    whatsapp: string;
+    instagram: string;
+    phone_numbers: string[];
+    produtos: string[]; // Corrigido para string[]
+  }>({
     nome: "",
     local: "",
     cidade: "",
     imagem: "",
+    whatsapp: "",
+    instagram: "",
     phone_numbers: [""],
+    produtos: [],
   });
   const [cidades, setCidades] = useState<any[]>([]);
 
   useEffect(() => {
     const loadData = async () => {
-      const result = await apiGet<any>(`/malharias/${params.id}`);
-      setForm({
-        nome: result.nome || "",
-        local: result.local || "",
-        cidade: result.cidade || "",
-        imagem: result.imagem || "",
-        phone_numbers:
-          result.phone_numbers && result.phone_numbers.length > 0
-            ? result.phone_numbers
-            : [""],
-      });
+      if (hasValidId(params.id)) {
+        const result = await apiGet<any>(`/malharias/${params.id}`);
+        setForm({
+          nome: result.nome || "",
+          local: result.local || "",
+          cidade: result.cidade || "",
+          imagem: result.imagem || "",
+          whatsapp: result.whatsapp || "",
+          instagram: result.instagram || "",
+          phone_numbers:
+            result.phone_numbers && result.phone_numbers.length > 0
+              ? result.phone_numbers
+              : [""],
+          produtos: result.produtos || [],
+        });
+      }
     };
 
     loadData();
     loadCidades();
-  }, []);
+  }, [params.id]);
 
   const loadCidades = async () => {
     try {
@@ -59,6 +76,27 @@ export default function Page({ params }: any) {
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleProdutosChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    const readers = files.map(
+      (file) =>
+        new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.onerror = () => reject(reader.error);
+          reader.readAsDataURL(file);
+        })
+    );
+
+    Promise.all(readers)
+      .then((images) => {
+        setForm((prev) => ({ ...prev, produtos: images }));
+      })
+      .catch((err) => {
+        console.error("Erro ao ler arquivos de produtos:", err);
+      });
   };
 
   const handleArrayChange = (
@@ -129,6 +167,26 @@ export default function Page({ params }: any) {
           />
         </div>
         <div>
+          <label className="block font-semibold mb-1">WhatsApp</label>
+          <input
+            type="text"
+            name="whatsapp"
+            value={form.whatsapp}
+            onChange={handleChange}
+            className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+        <div>
+          <label className="block font-semibold mb-1">Instagram</label>
+          <input
+            type="text"
+            name="instagram"
+            value={form.instagram}
+            onChange={handleChange}
+            className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+        </div>
+        <div>
           <label className="block font-semibold mb-1">Cidade</label>
           <select
             name="cidade"
@@ -171,6 +229,31 @@ export default function Page({ params }: any) {
                 alt="Preview"
                 className="max-w-full h-32 object-cover rounded border"
               />
+            </div>
+          )}
+        </div>
+        {/* Novo Campo Produtos — multiselect de imagens */}
+        <div>
+          <label className="block font-semibold mb-1">
+            Produtos (várias imagens)
+          </label>
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleProdutosChange}
+            className="w-full border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          {form.produtos.length > 0 && (
+            <div className="mt-2 grid grid-cols-3 gap-2">
+              {form.produtos.map((src, idx) => (
+                <img
+                  key={idx}
+                  src={src}
+                  alt={`Produto ${idx + 1}`}
+                  className="w-full h-24 object-cover rounded border"
+                />
+              ))}
             </div>
           )}
         </div>
