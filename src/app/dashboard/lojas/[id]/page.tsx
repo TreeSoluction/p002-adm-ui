@@ -2,37 +2,22 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { apiGet, apiPost, apiPut } from "@/app/utils/api";
-
-const categoriaOptions = [
-  "Acessórios",
-  "Aço",
-  "Artesanato",
-  "Bebê",
-  "Beleza",
-  "Calçados",
-  "Casa",
-  "Casual",
-  "Couro",
-  "Eletrônico",
-  "Evangélica",
-  "Fitness",
-  "Infantil",
-  "Selarias",
-];
+import { API_ROUTES } from "@/app/utils/routes"; // Importe API_ROUTES
 
 export default function Page({ params }: any) {
   const router = useRouter();
   const [cidades, setCidades] = useState<any[]>([]);
+  const [categoriasDisponiveis, setCategoriasDisponiveis] = useState<any[]>([]); // Novo estado para categorias
 
   const [form, setForm] = useState<{
     nome: string;
     imagem: string;
-    categoria: string;
+    categoria: string; // Continua sendo uma string para uma única categoria
     cidade: string;
     produtos: string[];
     whatsapp: string;
     instagram: string;
-    local: string; // Added Local field
+    local: string;
   }>({
     nome: "",
     categoria: "",
@@ -41,35 +26,51 @@ export default function Page({ params }: any) {
     produtos: [],
     whatsapp: "",
     instagram: "",
-    local: "", // Initialize Local
+    local: "",
   });
 
   useEffect(() => {
-    const loadData = async () => {
-      const result = await apiGet<any>(`/lojas/${params.id}`);
-      setForm({
-        nome: result.nome || "",
-        categoria: result.categoria || "",
-        cidade: result.cidade || "",
-        imagem: result.imagem || "",
-        produtos: result.produtos || [],
-        whatsapp: result.whatsapp || "",
-        instagram: result.instagram || "",
-        local: result.local || "", // Load Local data
-      });
-    };
-    loadCidades();
-    loadData();
-  }, [params.id]);
+    const loadInitialData = async () => {
+      // Carrega as cidades
+      try {
+        const resultCidades = await apiGet<any>("/cidades?size=1000&page=0");
+        setCidades(resultCidades.data);
+      } catch (error) {
+        console.error("Erro ao carregar cidades:", error);
+      }
 
-  const loadCidades = async () => {
-    try {
-      const result = await apiGet<any>("/cidades?size=1000&page=0");
-      setCidades(result.data);
-    } catch (error) {
-      console.error("Erro ao carregar cidades:", error);
-    }
-  };
+      // Carrega as categorias disponíveis
+      try {
+        const responseCategorias = await apiGet<any>(
+          `${API_ROUTES.CATEGORIAS}?page=1&size=9999`
+        );
+        setCategoriasDisponiveis(responseCategorias.data || []);
+      } catch (error) {
+        console.error("Erro ao carregar categorias disponíveis:", error);
+      }
+
+      // Carrega os dados da loja se for uma edição
+      if (hasValidId(params.id)) {
+        try {
+          const resultLoja = await apiGet<any>(`/lojas/${params.id}`);
+          setForm({
+            nome: resultLoja.nome || "",
+            categoria: resultLoja.categoria || "",
+            cidade: resultLoja.cidade || "",
+            imagem: resultLoja.imagem || "",
+            produtos: resultLoja.produtos || [],
+            whatsapp: resultLoja.whatsapp || "",
+            instagram: resultLoja.instagram || "",
+            local: resultLoja.local || "",
+          });
+        } catch (error) {
+          console.error("Erro ao carregar dados da loja:", error);
+        }
+      }
+    };
+
+    loadInitialData();
+  }, [params.id]);
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -133,11 +134,10 @@ export default function Page({ params }: any) {
   return (
     <div className="max-w-xl mx-auto bg-white p-8 rounded-lg shadow text-gray-800">
       <h1 className="text-2xl font-bold mb-6">
-        {hasValidId(params.id) ? "Editar Cidade" : "Nova Cidade"}
+        {hasValidId(params.id) ? "Editar Loja" : "Nova Loja"}
       </h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Campo Nome */}
         <div>
           <label className="block font-semibold mb-1">Nome</label>
           <input
@@ -150,6 +150,7 @@ export default function Page({ params }: any) {
           />
         </div>
 
+        {/* Campo Categoria - Agora dinâmico e de seleção única */}
         <div>
           <label className="block font-semibold mb-1">Categoria</label>
           <select
@@ -160,9 +161,9 @@ export default function Page({ params }: any) {
             required
           >
             <option value="">Selecione uma categoria</option>
-            {categoriaOptions.map((categoria) => (
-              <option key={categoria} value={categoria}>
-                {categoria}
+            {categoriasDisponiveis.map((categoria) => (
+              <option key={categoria.id} value={categoria.nome}>
+                {categoria.nome}
               </option>
             ))}
           </select>
@@ -186,7 +187,6 @@ export default function Page({ params }: any) {
           </select>
         </div>
 
-        {/* Campo WhatsApp */}
         <div>
           <label className="block font-semibold mb-1">WhatsApp</label>
           <input
@@ -198,7 +198,6 @@ export default function Page({ params }: any) {
           />
         </div>
 
-        {/* Campo Instagram */}
         <div>
           <label className="block font-semibold mb-1">Instagram</label>
           <input
@@ -210,7 +209,6 @@ export default function Page({ params }: any) {
           />
         </div>
 
-        {/* Campo Local */}
         <div>
           <label className="block font-semibold mb-1">Local</label>
           <input
@@ -222,7 +220,6 @@ export default function Page({ params }: any) {
           />
         </div>
 
-        {/* Campo Imagem Única */}
         <div>
           <label className="block font-semibold mb-1">Imagem</label>
           <input
@@ -242,7 +239,6 @@ export default function Page({ params }: any) {
           )}
         </div>
 
-        {/* Novo Campo Produtos — multiselect de imagens */}
         <div>
           <label className="block font-semibold mb-1">
             Produtos (várias imagens)
@@ -268,7 +264,6 @@ export default function Page({ params }: any) {
           )}
         </div>
 
-        {/* Botão Salvar */}
         <button
           type="submit"
           className="w-full bg-blue-700 text-white py-3 rounded font-bold text-lg hover:bg-blue-800 transition"
@@ -278,4 +273,9 @@ export default function Page({ params }: any) {
       </form>
     </div>
   );
+}
+
+function hasValidId(id: any) {
+  if (isNaN(id)) return false;
+  return id && id !== "" && id !== "undefined" && id !== "null";
 }

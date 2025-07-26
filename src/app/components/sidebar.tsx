@@ -16,6 +16,7 @@ const menu = [
   { label: "Carrosel", href: "/dashboard/carrosel" },
   { label: "Lojas", href: "/dashboard/lojas" },
   { label: "Freteiros", href: "/dashboard/freteiros" },
+  { label: "Categorias", href: "/dashboard/categorias" },
 ];
 
 type SidebarProps = {
