@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { useRouter } from "next/navigation";
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL,
+  baseURL: "https://api.feirasdepernambuco.com.br",
   headers: {
     "Content-Type": "application/json",
   },
