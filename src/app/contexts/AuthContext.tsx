@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useState, ReactNode, useEffect } from "react";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 
 interface IAuthContext {

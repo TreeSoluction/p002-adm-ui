@@ -1,7 +1,7 @@
-import axios, { AxiosError, AxiosRequestConfig } from "axios";
-import { useRouter } from "next/navigation";
+import axios, { AxiosRequestConfig } from "axios";
+
 const api = axios.create({
-  baseURL: "https://api.feirasdepernambuco.com.br",
+  baseURL: process.env.NEXT_PUBLIC_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -25,7 +25,7 @@ api.interceptors.response.use(
       window.location.href = "/login";
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 // Função para tratar erros
@@ -46,7 +46,10 @@ function handleError(error: any): string {
 }
 
 // Função GET
-export async function apiGet<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+export async function apiGet<T>(
+  url: string,
+  config?: AxiosRequestConfig,
+): Promise<T> {
   try {
     const res = await api.get<T>(url, config);
     return res.data;
@@ -56,7 +59,11 @@ export async function apiGet<T>(url: string, config?: AxiosRequestConfig): Promi
 }
 
 // Função POST
-export async function apiPost<T>(url: string, data: any, config?: AxiosRequestConfig): Promise<T> {
+export async function apiPost<T>(
+  url: string,
+  data: any,
+  config?: AxiosRequestConfig,
+): Promise<T> {
   try {
     const res = await api.post<T>(url, data, config);
     return res.data;
@@ -66,7 +73,11 @@ export async function apiPost<T>(url: string, data: any, config?: AxiosRequestCo
 }
 
 // Função PUT
-export async function apiPut<T>(url: string, data: any, config?: AxiosRequestConfig): Promise<T> {
+export async function apiPut<T>(
+  url: string,
+  data: any,
+  config?: AxiosRequestConfig,
+): Promise<T> {
   try {
     const res = await api.put<T>(url, data, config);
     return res.data;
@@ -76,7 +87,10 @@ export async function apiPut<T>(url: string, data: any, config?: AxiosRequestCon
 }
 
 // Função DELETE
-export async function apiDelete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+export async function apiDelete<T>(
+  url: string,
+  config?: AxiosRequestConfig,
+): Promise<T> {
   try {
     const res = await api.delete<T>(url, config);
     return res.data;
