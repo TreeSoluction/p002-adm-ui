@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 const columns = [
   { key: "id", label: "ID" },
   { key: "imagem", label: "Imagem" },
+  { key: "link", label: "Link" },
 ];
 
 function sortData(data: any, sortBy: any, sortOrder: any) {
@@ -58,7 +59,7 @@ export default function Page() {
       <h1 className="text-2xl font-bold text-blue-700 mb-6">Meu Carrosel</h1>
       <div className="flex justify-between gap-10">
         <input type="text" placeholder="Pesquisar..." className="border border-blue-200 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 w-full max-w-xs" value={search} onChange={(e) => { setSearch(e.target.value); setPage(1); }} />
-        <button className="flex bg-blue-800 p-1 px-10 rounded-sm justify-center items-center" onClick={() => navigate("/dashboard/carrosel/gerenciar")}>Criar</button>
+        <button className="flex bg-blue-800 text-white p-1 px-10 rounded-sm justify-center items-center" onClick={() => navigate("/dashboard/carrosel/gerenciar")}>Criar</button>
       </div>
       <div className="overflow-x-auto bg-white rounded-lg shadow">
         <table className="min-w-full divide-y divide-blue-200">
@@ -79,7 +80,24 @@ export default function Page() {
             {sortedData.map((item) => (
               <tr key={item.id} className="hover:bg-blue-50 transition">
                 <td className="px-4 py-2">{item.id}</td>
-                <td className="px-4 py-2">{item.imagem}</td>
+                <td className="px-4 py-2">
+                  <div className="w-40 h-20 rounded overflow-hidden border border-blue-100 bg-gray-50 flex items-center justify-center">
+                    {item.imagem ? (
+                      <img src={item.imagem} alt="Carrosel" className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-xs text-gray-400">Sem imagem</span>
+                    )}
+                  </div>
+                </td>
+                <td className="px-4 py-2">
+                  {item.link ? (
+                    <a href={item.link} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline text-sm truncate max-w-[200px] block">
+                      {item.link}
+                    </a>
+                  ) : (
+                    <span className="text-gray-400 text-sm">-</span>
+                  )}
+                </td>
                 <td className="px-4 py-2 flex gap-2">
                   <button onClick={() => handleEdit(item.id)} className="p-2 rounded hover:bg-blue-100 text-blue-700" title="Editar"><svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-2.828 0L9 13zm-6 6h6" /></svg></button>
                   <button onClick={() => handleDelete(item.id)} className="p-2 rounded hover:bg-red-100 text-red-600" title="Deletar"><svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg></button>
